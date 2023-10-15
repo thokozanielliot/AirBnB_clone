@@ -2,11 +2,19 @@
 """This is File Storage class for AirBnB"""
 import json
 from models.base_model import BaseModel
+from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
+from models.state import State
+
 
 class FileStorage:
     """
-    A class that serializes instances to a JSON file & deserialize JSON file to instances
-    
+    A class that serializes instances to a JSON file &
+    deserialize JSON file to instances
+
     Attributes:
         __file_path: string path to the json file
         __objects: dictionary - empty but will store all objects by class.id
@@ -17,20 +25,15 @@ class FileStorage:
     def all(self):
         """Return the dictionary __objects"""
         return FileStorage.__objects
-    
+
     def new(self, obj):
         """Set in __objects the obj with key <obj classname>.id"""
         if obj:
             key = "{}.{}".format(type(obj).__name__, obj.id)
             self.__objects[key] = obj
-    
+
     def save(self):
         """Serialzes __objects to JSON file"""
-        #my_dict = {}
-        #for key, value in self.__objects.items():
-        #    my_dict[key] = value.to_dict()
-        #with open(self.__file_path, "w", encoding="UTF-8") as f:
-        #    json.dump(my_dict, f)
         oDict = self.__objects
         objDict = {obj: oDict[obj].to_dict() for obj in oDict.keys()}
         with open(self.__file_path, "w", encoding="UTF-8") as f:
@@ -45,4 +48,3 @@ class FileStorage:
                     self.__objects[key] = value
         except FileNotFoundError:
             pass
-
