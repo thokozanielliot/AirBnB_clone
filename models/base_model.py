@@ -12,10 +12,6 @@ class BaseModel:
         """
         Initialize instances
         """
-        #self.id = str(uuid4())
-        #self.created_at = datetime.today()
-        #self.update_at = datetime.today()
-
         if kwargs:
             for key, value in kwargs.items():
                 if key == "created_at":
@@ -41,26 +37,20 @@ class BaseModel:
         models.storage.save()
 
     def to_dict(self):
-        """Return a ditionary conatining all key/values of  __dict__ of the instance"""
+        """
+        Return a ditionary conatining all key/values of
+        __dict__ of the instance
+        """
         create_at = self.created_at.isoformat()
         update_at = self.update_at.isoformat()
-        #self.created_at = create_at.isoformat()
-        #self.update_at = update_at.isoformat()
-        
+
         dictCopy = self.__dict__.copy()
         dictCopy["created_at"] = create_at
         dictCopy["update_at"] = update_at
         dictCopy["__class__"] = self.__class__.__name__
-        
-        return dictCopy
-        """return {
-            "__class__": self.__class__.__name__,
-            "update_at": self.update_at,
-            "id": self.id,
-            "created_at": self.created_at
-        }"""
 
-    
+        return dictCopy
+
     def __str__(self):
         """Special representation for printing a string"""
         className = self.__class__.__name__

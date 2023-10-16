@@ -14,9 +14,6 @@ class TestBaseModel(unittest.TestCase):
         cls.base.name = "Elliot"
         cls.base.my_number = 29
 
-
-
-    
     def test_checking_for_docstring_BaseModel(self):
         """Checking for the class docstrings"""
         a = BaseModel().__doc__
@@ -35,7 +32,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(hasattr(BaseModel, "__init__"))
         self.assertTrue(hasattr(BaseModel, "save"))
         self.assertTrue(hasattr(BaseModel, "to_dict"))
-    
+
     def test_to_dict_BaseModel(self):
         """Test if dictionary works"""
         base_dict = self.base.to_dict()
@@ -45,6 +42,6 @@ class TestBaseModel(unittest.TestCase):
 
         print(self.base)
 
-    
+
 if __name__ == "__main__":
     unittest.main()
