@@ -9,42 +9,42 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 
+allClasses = {"Amenity": Amenity, "BaseModel": BaseModel, "User": User,
+           "City": City, "Place": Place, "Review": Review, "State": State}
+
 
 class FileStorage:
     """
-    A class that serializes instances to a JSON file &
-    deserialize JSON file to instances
-
-    Attributes:
-        __file_path: string path to the json file
-        __objects: dictionary - empty but will store all objects by class.id
+    Serialize instances to a JSon file & Deserializes back to instances
     """
+
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
-        """Return the dictionary __objects"""
-        return FileStorage.__objects
-
+        """Returns the dictionary __objects"""
+        return self.__objects
+    
     def new(self, obj):
-        """Set in __objects the obj with key <obj classname>.id"""
-        if obj:
-            key = "{}.{}".format(type(obj).__name__, obj.id)
+        """Sets in __objects the obj with key <obj class name>.id"""
+        if obj is not None:
+            key = obj.__class__.__name__ + "." + obj.id
             self.__objects[key] = obj
-
+    
     def save(self):
-        """Serialzes __objects to JSON file"""
-        oDict = self.__objects
-        objDict = {obj: oDict[obj].to_dict() for obj in oDict.keys()}
-        with open(self.__file_path, "w", encoding="UTF-8") as f:
-            json.dump(objDict, f)
-
+        """Serializes __objects to the JSON file"""
+        jsonObjects = {}
+        for key in self.__objects:
+            jsonObjects[key] = self.__objects[key].to_dict()
+        with open(self.__file_path, "w") as f:
+            json.dump(jsonObjects, f)
+    
     def reload(self):
-        """Deserializer the JSON file to __objects"""
+        """Deserialize the JSON file to __objects"""
         try:
             with open(self.__file_path, "r") as f:
-                for key, value in (json.load(f)).items():
-                    value = eval(value["__class__"])(**value)
-                    self.__objects[key] = value
+                jsonObjects = json.load(f)
+            for key in jsonObjects:
+                self.__objects[key] = allClasses[jsonObjects[key]["__class__"]](**jsonObjects[key])
         except FileNotFoundError:
             pass
