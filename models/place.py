@@ -6,7 +6,7 @@ from models.base_model import BaseModel
 class Place(BaseModel):
     """
     Represent a Place class
-    
+
     Attributes:
         city_id(string): Will be City.id
         user_id(String): Will be User.id
