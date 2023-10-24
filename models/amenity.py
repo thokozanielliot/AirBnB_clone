@@ -11,3 +11,7 @@ class Amenity(BaseModel):
         name(String)
     """
     name = ""
+
+    def __int__(self, *args, **kwargs):
+        """Initializes Amenity"""
+        super().__init__(*args, **kwargs)

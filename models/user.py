@@ -17,3 +17,7 @@ class User(BaseModel):
     password = ""
     first_name = ""
     last_name = ""
+
+    def __int__(self, *args, **kwargs):
+        """Initializes User"""
+        super().__init__(*args, **kwargs)
