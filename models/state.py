@@ -11,3 +11,7 @@ class State(BaseModel):
         name(string)
     """
     name = ""
+
+    def __int__(self, *args, **kwargs):
+        """Initializes State"""
+        super().__init__(*args, **kwargs)
