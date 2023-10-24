@@ -37,7 +37,6 @@ class HBNBCommand(cmd.Cmd):
     def help_quit(self):
         print("Quit the program")
 
-
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel, saves it to
@@ -235,7 +234,7 @@ class HBNBCommand(cmd.Cmd):
         newStr = args[1][args[1].find("(")+1:args[1].find(")")]
         newList.append(" ".join(newStr.split(", ")))
         return " ".join(i for i in newList)
-    
+
     def count(self, arg):
         """
         Count the instances of a class
@@ -253,6 +252,7 @@ class HBNBCommand(cmd.Cmd):
             print(count)
         except NameError:
             print("** class doesn't exist **")
+
     def default(self, arg):
         """
         Retrive all instances of a class & number of instances
@@ -278,6 +278,7 @@ class HBNBCommand(cmd.Cmd):
                     self.do_update(args)
         else:
             cmd.Cmd.default(self, arg)
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()

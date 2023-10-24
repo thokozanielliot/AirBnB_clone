@@ -4,6 +4,8 @@ from uuid import uuid4
 from datetime import datetime
 import models
 
+time_format = "%Y-%m-%dT%H:%M:%S.%f"
+
 
 class BaseModel:
     """A class representing the BaseMode of AirBnB project"""
@@ -14,26 +16,22 @@ class BaseModel:
         """
         if kwargs:
             for key, value in kwargs.items():
-                if key == "created_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
-                if key == "update_at":
-                    value = datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
                 if key != "__class__":
                     setattr(self, key, value)
-            if "id" not in kwargs:
-                self.id = str(uuid4())
-            if "created_at" not in kwargs:
-                self.created_at = datetime.today()
-            if "update_at" not in kwargs:
-                self.update_at = datetime.today()
+                if hasattr(self, "created_at") and type(self.created_at) is str:
+                    self.created_at = datetime.strptime(kwargs["created_at"], time_format)
+                if hasattr(self, "updated_at") and type(self.updated_at) is str:
+                    self.updated_at = datetime.strptime(kwargs["updated_at"], time_format)
         else:
             self.id = str(uuid4())
-            self.created_at = self.update_at = datetime.today()
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
             models.storage.new(self)
+            models.storage.save()
 
     def save(self):
-        """Update update_at with current datetime"""
-        self.update_at = datetime.today()
+        """Update updated_at with current datetime"""
+        self.updated_at = datetime.now()
         models.storage.save()
 
     def to_dict(self):
@@ -41,14 +39,12 @@ class BaseModel:
         Return a ditionary conatining all key/values of
         __dict__ of the instance
         """
-        create_at = self.created_at.isoformat()
-        update_at = self.update_at.isoformat()
-
         dictCopy = self.__dict__.copy()
-        dictCopy["created_at"] = create_at
-        dictCopy["update_at"] = update_at
+        if "created_at" in dictCopy:
+            dictCopy["created_at"] = dictCopy["created_at"].strftime(time_format)
+        if "updated_at" in dictCopy:
+            dictCopy["updated_at"] = dictCopy["updated_at"].strftime(time_format)
         dictCopy["__class__"] = self.__class__.__name__
-
         return dictCopy
 
     def __str__(self):
